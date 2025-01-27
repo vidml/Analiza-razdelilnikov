@@ -2,8 +2,6 @@ headers=['Enota','Objekt','Sklic','Strošek','Opis stroška','Dobavitelj','ID za
 import os
 import pandas as pd
 import numpy as np
-# import matplotlib.pyplot as plt
-# import statistics
 from datetime import datetime
 import plotly.express as px
 import plotly.io as pio
@@ -13,16 +11,12 @@ from plotly.subplots import make_subplots
 
 pio.renderers.default='browser'
 
-# print(os.getcwd())
 
 
 # Find all files that match the pattern
-files = [file for file in os.listdir() if 'Razdelilnik_' in file]
+files = [file for file in os.listdir() if file.startswith('Razdelilnik_') and file.endswith('.xls')]
 
 # Process tables
-#all_tables, datumi_racunov = clean_and_unify_tables(files)
-# Define a function to clean and unify data
-# def clean_and_unify_tables(files):
 all_tables = []
 datumi_racunov = []
 unique_arr=np.array([])
@@ -35,87 +29,53 @@ unique_values=pd.DataFrame; #Array of unique cost names.
 for fi in range(len(files)):#Read all files:
     file=files[fi]
     print(file)
-    # dfout=pd.DataFrame
-    # Read HTML table
+    # Read HTML table and clean it up
     df=pd.read_html(file,decimal=',', thousands='.',encoding='ISO-8859-2')#,encoding='utf8',charset='ISO 8859-2'
     df = [df_fracture for df_fracture in df if df_fracture.shape != (1, 4)] #Omit headers
     df = pd.concat(df,ignore_index=True)
-    
     df=df[df[0]!="Enota"] #Omit these rows
     df=df.reset_index(drop=True)
     for il, line in enumerate(df[3]):
         if (line=='OGREVANJE PROSTOROV - TOPLOTNA ENERGIJA'):
-            # print(il)
-            # df[il,3]='TOPLOTNA ENERGIJA'
             df.loc[il,3] = 'TOPLOTNA ENERGIJA'
-    
-    # ogr_lines=df[3]=='OGREVANJE PROSTOROV - TOPLOTNA ENERGIJA'
-    # df[3][ogr_lines]
-    
-    # df=df.reset_index(drop=True)
-    
-    
     ps_lines=df[3]=="Poraba prostovoljno zbranih sredstev (999 ZBIRANJE SREDSTEV ZA VZDRŽEVANJE-PS)" # Preimenuj OGREVANJE PROSTOROV - TOPLOTNA ENERGIJA v TOPLOTNA ENERGIJA
     ps_lines = ps_lines | ps_lines.shift(-1, fill_value=False)
     df = df[~ps_lines]
     df=df.reset_index(drop=True)
-    #df.columns = [f'Column_{i+1}' for i in range(len(df.columns))]  # Rename for consistency
-    # Make empty dataframe
-    result_df = pd.DataFrame()
     # Get all unique values in column 3
     unique_arr=np.unique(np.append(unique_arr,df[3])) # Imamo seznam vseh unikatnih
-    # unique_values = pd.concat([unique_values, (df[3])], ignore_index=True).unique() 
-    # unique_values = unique_values.append(df[3]).unique()
     # Parse and calculate average service dates
-    dates=[];#np.array([],method=datetime.date)
+    dates=[];
     for i, datestr in enumerate(df[10]):
         if len(datestr)>12:
             d1=pd.to_datetime(datestr[0:10],dayfirst='true')
             d2=pd.to_datetime(datestr[13::],dayfirst='true')
             d=datetime.fromtimestamp(np.mean([d1.timestamp(),d2.timestamp()]))
         elif len(datestr)==8:
-            # print(datestr)
-            # pd.to_datetime(datestr,dayfirst='true')
-            
             d=datetime_object = datetime.strptime(datestr, '%d%m%Y')
         else:
             d=pd.NaT()
             print("NaT entry")
         df.loc[i,10]=d
-        # np.append(dates,d)
         dates.append(d)
-    # a=[date.timestamp() for date in dates]
     datumi_racunov.append(datetime.fromtimestamp(np.mean([date.timestamp() for date in dates])))
     for il, line in enumerate(df[3]):
         if (line=='HLADNA VODA - PORABA'):
-            # print(il)
-            # df[il,3]='TOPLOTNA ENERGIJA'
             vodam3=df.loc[il,15][:6]
     poraba_vode=np.append(poraba_vode,float(vodam3[:len(vodam3)-3].replace(",",".")))
-    # datumi_racunov.append(dates.timestamp())
-    #df['Column_11'] = pd.to_datetime(df['Column_11'], errors='coerce')  # DatumOpravljeneStoritve
-    #avg_date = df['Column_11'].mean()
     all_tables.append(df.reset_index(drop=True))
 
 
     
-# costs=[[0]*len(all_tables)]*len(unique_arr) # Initializes with pointers !!
 costs = [[0] * len(all_tables) for _ in range(len(unique_arr))]  # Individual costs (stanovanja, po postavki)
 tcosts = [[0] * len(all_tables) for _ in range(len(unique_arr))] # Total costs (polni stroški stavbe, po postavki)
 for i, table in enumerate(all_tables): #For each df (i=seq. month)
-    # table
-    # costs=pd.DataFrame(unique_arr).join(pd.DataFrame(np.zeros([len(unique_arr),len(all_tables)])))
-    # table=table.reset_index()
-    # print(i)
     for j, cname in enumerate(table[3]): #For each line in table
         a=np.where(unique_arr==cname)[0][0] # a is the ID in unique array
         costs[a][i]=costs[a][i]+table[17][j] # Submit (add) cost to unified table of costs
         tcosts[a][i]=table[12][j] # replace (do not SUM, ker jih upravnik v tabeli ponavlja in ne deli)
         tcosts[a][i]=tcosts[a][i]+table[12][j] # replace (do not SUM, ker jih upravnik v tabeli ponavlja in ne deli)
         
-
-# costs=0*len(all_tables)
-# totals=0*len(all_tables)
 cum_costs=[[0] for _ in range(len(unique_arr))]
 for ci, costline in enumerate(costs):
     cum_costs[ci]=sum(costline)  #Cumulative costs so far (za vsako postavko)
@@ -124,15 +84,7 @@ cum_tcosts=[[0] for _ in range(len(unique_arr))]
 for tci, tcostline in enumerate(tcosts):
     cum_tcosts[tci]=sum(tcostline)  #Cumulative costs so far (za vsako postavko)
 
-    
-# Create cost matrices
-# % Seznam, kumulus in in povprečje/m
-# costlist=sortrows(table((1:numel(names))', names, sum(ucosts,2), mean(ucosts,2),mean(ucosts,2)./sum(mean(ucosts,2)).*100, mean(ucosts_totals,2), mean(ucosts,2)./mean(ucosts_totals,2).*100,'VariableNames',["ID", "Strošek","Skupaj (EUR)", "Povpr. (EUR/m)", "Delež položnice (%)","Polna cena (EUR)", "Delež polne c. (%)"]),4,'descend');
-# old_IDs=costlist{:,1};
-# costlist{:,1}=(1:size(names,1))';
-# 
-# disp(costlist)
-# cum_costs.sort()
+
 
 #### Imamo (unsorted): unique_arr, costs, cum_costs, tcosts. Sort these by the value of cum_costs, so according to indexes in sortlist
 sortlist=np.argsort(cum_costs)[::-1]
@@ -156,14 +108,6 @@ dpr=(ogrevanje_stanovanja)/(ogrevanje_stavbe)
 avgs=(sorted_cum_costs)/len(datumi_racunov)
 del_pol=sorted_cum_costs/sum(sorted_cum_costs)
 del_stavbe=np.divide(sorted_cum_costs,sorted_cum_tcosts)
-# data_arr=[[0] for _ in range(len(unique_arr))]
-# data_arr.join((avgs,sorted_cum_costs,sorted_cum_tcosts))
-
-
-
-
-# a=pd.DataFrame(a)
-
 
 
 fig = make_subplots(
@@ -208,15 +152,7 @@ fig.add_trace(go.Pie(labels=sorted_names, values=avg_costs, name="Povprečni del
 
 # Update layout
 # fig.update_layout(height=2160/2, width=3840/2, title_text="Pregled obračunov stroškov upravljanja")
-fig.update_layout( title_text="Pregled obračunov stroškov z mojUpravnik"    
-                  # paper_bgcolor='black',  # Background color of the entire figure
-                  #  plot_bgcolor='grey'       # Background color of the plot area
-                  )
-
-# fig.show()
-
-# a = px.data.gapminder()
-# fig = px.area(df, x="year", y="pop", color="continent", line_group="country")
+fig.update_layout( title_text="Pregled obračunov stroškov z mojUpravnik")
 
 df_summary = pd.DataFrame({
     'Strošek': sorted_names,
@@ -226,8 +162,6 @@ df_summary = pd.DataFrame({
     'Dosedanja vsota stavbe (EUR)(ERROR!)': sorted_cum_tcosts,
     'Delež pol. stavbe (ERROR!)': del_stavbe
 })
-
-
 
 # Convert datumi_racunov to strings for column headers
 columns = [pd.to_datetime(date).strftime('%Y-%m') for date in datumi_racunov]
@@ -256,7 +190,7 @@ with pd.ExcelWriter('Rezultati za vse razdelilnike.xlsx') as writer:
     
 
 
-# Assuming df_long is already created as before
+# Using df_long from before
 df_long = df_sorted_costs.melt(
     id_vars="Strošek",
     var_name="Date",
@@ -285,6 +219,9 @@ fig.update_xaxes(title_text="Datum", row=1, col=1)
 # Show the updated figure
 fig.show()
 
+
+
+### Plot % of building cost in your cost for individual cost in sorted_names
 # x_values = np.arange(len(del_stavbe))
 
 # # Create a line plot
