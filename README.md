@@ -22,7 +22,7 @@ V mapi programa se pojavi "Rezultati za vse razdelilnike.xlsx" z urejenimi podat
 
 Funkcije:
 Grafični povzetek 
- ![image](https://github.com/user-attachments/assets/7aa1e252-9467-415b-b39d-229fb98763b3)
+![image](https://github.com/user-attachments/assets/7a29ac65-d80e-4b6b-b35c-f2c5ba218de3)
 
 Excel tabele "Rezultati za vse razdelilnike.xlsx"
 -	Tabela 'Povzetek' za vse stroške povzema mesečno povprečje, skupno vsoto vseh položnic, povprečni delež zneska na vaši položnici, skupno vsoto vseh položnic stavbe (glej (ERROR!) opozorilo spodaj) in preračunan delež stroška stanovanja glede na stavbo. 
