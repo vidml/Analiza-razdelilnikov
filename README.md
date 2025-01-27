@@ -12,8 +12,9 @@ Uporaba:
     ![image](https://github.com/user-attachments/assets/b1b235eb-a131-48e9-8e35-e9668734ab9f)
 5.	Ponovi ta izvoz za vse mesce v Arhivu razdelilnikov
 6.	Prenesene razdelilnike dodaj v mapo k programu. Program bo prebral le datoteke v isti mapi z začetnico "Razdelilnik_".
+7.	
     ![image](https://github.com/user-attachments/assets/67b3d1d8-31ac-4f7f-a42a-5bb8b0618ea5)
-7.	Zaženi program. 
+8.	Zaženi program. 
 Po nekaj trenutkih bo program v brskalniku prikazal grafično analizo podatkov. 
 V mapi programa se pojavi "Rezultati za vse razdelilnike.xlsx" z urejenimi podatki.
 
