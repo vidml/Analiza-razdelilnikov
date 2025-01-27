@@ -6,13 +6,14 @@ Analizator za razdelilnike s portala mojUpravnik. 				Vid Mlačnik, 2025
 Uporaba:
 1.	Vpiši se v portal mojupravnik.si. 
 2.	Odpri podrobnosti delilnika za nek mesec.
-    ![image](https://github.com/user-attachments/assets/f2cfcf70-7e9b-45f4-b8b0-15bb2494b17c)
-3.	Na dnu strani izvozi XLS.  
+
+  	![image](https://github.com/user-attachments/assets/f2cfcf70-7e9b-45f4-b8b0-15bb2494b17c)
+4.	Na dnu strani izvozi XLS.  
     ![image](https://github.com/user-attachments/assets/b1b235eb-a131-48e9-8e35-e9668734ab9f)
-4.	Ponovi ta izvoz za vse mesce v Arhivu razdelilnikov
-5.	Prenesene razdelilnike dodaj v mapo k programu. Program bo prebral le datoteke v isti mapi z začetnico "Razdelilnik_".
+5.	Ponovi ta izvoz za vse mesce v Arhivu razdelilnikov
+6.	Prenesene razdelilnike dodaj v mapo k programu. Program bo prebral le datoteke v isti mapi z začetnico "Razdelilnik_".
     ![image](https://github.com/user-attachments/assets/67b3d1d8-31ac-4f7f-a42a-5bb8b0618ea5)
-6.	Zaženi program. 
+7.	Zaženi program. 
 Po nekaj trenutkih bo program v brskalniku prikazal grafično analizo podatkov. 
 V mapi programa se pojavi "Rezultati za vse razdelilnike.xlsx" z urejenimi podatki.
 
