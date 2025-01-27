@@ -25,10 +25,11 @@ Grafični povzetek
  ![image](https://github.com/user-attachments/assets/7aa1e252-9467-415b-b39d-229fb98763b3)
 
 Excel tabele "Rezultati za vse razdelilnike.xlsx"
-o	Tabela 'Povzetek' za vse stroške povzema mesečno povprečje, skupno vsoto vseh položnic, povprečni delež zneska na vaši položnici, skupno vsoto vseh položnic stavbe (glej (ERROR!) opozorilo spodaj) in preračunan delež stroška stanovanja glede na stavbo. 
-o	Tabela 'Poraba' podaja porabo vode in preračunano razmerje stroška ogrevanja glede na stavbo.
-o	Tabela 'Mesečni stroški stanovanja' je urejen povzetek vseh postavk na položnicah.
-o	Tabela 'Mesečni stroški stavbe' je urejen povzetek vseh postavk na položnicah. Pozor, te niso nujno pravilno prepisane (glej (ERROR!) opozorilo spodaj).
+-	Tabela 'Povzetek' za vse stroške povzema mesečno povprečje, skupno vsoto vseh položnic, povprečni delež zneska na vaši položnici, skupno vsoto vseh položnic stavbe (glej (ERROR!) opozorilo spodaj) in preračunan delež stroška stanovanja glede na stavbo. 
+-	Tabela 'Poraba' podaja porabo vode in preračunano razmerje stroška ogrevanja glede na stavbo.
+-	Tabela 'Mesečni stroški stanovanja' je urejen povzetek vseh postavk na položnicah.
+-	Tabela 'Mesečni stroški stavbe' je urejen povzetek vseh postavk na položnicah. Pozor, te niso nujno pravilno prepisane (glej (ERROR!) opozorilo spodaj).
+
 [(ERROR!)]: Pozor – podatki skupnih stroškov stavbe so nesigurni, ker so navedene cene računov z mojUpravnik pri nekaterih postavkah ponovljene, pri nekaterih razdeljene. Program za tabelo "Mesečni stroški stavbe (ERROR!)" uporablja samo eno vrednost na postavko (zadnjo po vrsti).
 
 
