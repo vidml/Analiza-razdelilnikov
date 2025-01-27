@@ -74,7 +74,7 @@ for i, table in enumerate(all_tables): #For each df (i=seq. month)
         a=np.where(unique_arr==cname)[0][0] # a is the ID in unique array
         costs[a][i]=costs[a][i]+table[17][j] # Submit (add) cost to unified table of costs
         tcosts[a][i]=table[12][j] # replace (do not SUM, ker jih upravnik v tabeli ponavlja in ne deli)
-        tcosts[a][i]=tcosts[a][i]+table[12][j] # replace (do not SUM, ker jih upravnik v tabeli ponavlja in ne deli)
+        # tcosts[a][i]=tcosts[a][i]+table[12][j] # replace (do not SUM, ker jih upravnik v tabeli ponavlja in ne deli)
         
 cum_costs=[[0] for _ in range(len(unique_arr))]
 for ci, costline in enumerate(costs):
